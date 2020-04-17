@@ -1,7 +1,7 @@
 ﻿
 namespace IUForms.Infrastructure
 {
-    using IUForms.ViewModels;
+    using ViewModels;
 
     public class InstanceLocator
     {
