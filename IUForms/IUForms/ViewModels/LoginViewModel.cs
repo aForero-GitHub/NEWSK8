@@ -33,6 +33,7 @@
                 return;
             }
 
+            MainViewModel.GetInstance().Posts = new PostsViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new PostPage());
 
         }
