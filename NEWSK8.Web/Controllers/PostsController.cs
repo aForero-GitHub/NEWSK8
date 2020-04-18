@@ -3,6 +3,7 @@
     using Data;
     using Data.Entities;
     using Helpers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using NEWSK8.Web.Models;
@@ -11,6 +12,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    [Authorize]
     public class PostsController : Controller
     {
         private readonly IPostRepository postRepository;
@@ -79,8 +81,7 @@
                     path = $"~/images/Posts/{file}";
                 }
 
-                //TODO: chnge for logged user
-                view.Users = await this.userHelper.GetUserByEmailAsync("adavidforero@ucundinamarca.edu.co");
+                view.Users = await this.userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                 var posts = this.ToPost(view, path);
                 await this.postRepository.CreateAsync(posts);
                 return RedirectToAction(nameof(Index));
@@ -167,9 +168,7 @@
                         path = $"~/images/Posts/{file}";
                     }
 
-
-                    //TODO: chnge for logged user
-                    view.Users = await this.userHelper.GetUserByEmailAsync("adavidforero@ucundinamarca.edu.co");
+                    view.Users = await this.userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                     var posts = this.ToPost(view, path);
                     await this.postRepository.UpdateAsync(view);
                 }
