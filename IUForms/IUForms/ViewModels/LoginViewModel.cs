@@ -1,7 +1,7 @@
 ﻿namespace IUForms.ViewModels
 {
     using GalaSoft.MvvmLight.Command;
-    using System;
+    using IUForms.Views;
     using System.Windows.Input;
     using Xamarin.Forms;
 
@@ -15,7 +15,7 @@
 
         private async void Login()
         {
-            if(string.IsNullOrEmpty(this.Email))
+            if (string.IsNullOrEmpty(this.Email))
             {
                 await Application.Current.MainPage.DisplayAlert(
                     "Error",
@@ -33,10 +33,8 @@
                 return;
             }
 
-            await Application.Current.MainPage.DisplayAlert(
-                    "Ok",
-                    "Fuck Yeah!!!",
-                    "Accept");
+            await Application.Current.MainPage.Navigation.PushAsync(new PostPage());
+
         }
     }
 }

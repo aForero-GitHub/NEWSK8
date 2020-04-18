@@ -1,7 +1,5 @@
 ﻿using IUForms.Views;
-using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace IUForms
 {

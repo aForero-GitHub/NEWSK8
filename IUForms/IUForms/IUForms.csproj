@@ -17,7 +17,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\NEWSK8.Commont\NEWSK8.Commont.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\PostsPage.xaml.cs">
+      <DependentUpon>PostsPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Update="Views\LoginPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\PostsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
