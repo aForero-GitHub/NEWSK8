@@ -36,13 +36,13 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PostNotFound");
             }
 
             var posts = await this.postRepository.GetByIdAsync(id.Value);
             if (posts == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PostNotFound");
             }
 
             return View(posts);
@@ -110,13 +110,13 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PostNotFound");
             }
 
             var posts = await this.postRepository.GetByIdAsync(id.Value);
             if (posts == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PostNotFound");
             }
 
             var view = this.ToPostViewModel(posts);
@@ -143,7 +143,7 @@
         {
             if (id != view.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("PostNotFound");
             }
 
             if (ModelState.IsValid)
@@ -179,7 +179,7 @@
                 {
                     if (!await this.postRepository.ExistAsync(view.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("PostNotFound");
                     }
                     else
                     {
@@ -197,13 +197,13 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PostNotFound");
             }
 
             var posts = await this.postRepository.GetByIdAsync(id.Value);
             if (posts == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PostNotFound");
             }
 
             return View(posts);
@@ -218,5 +218,11 @@
             await this.postRepository.DeleteAsync(posts);
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult PostNotFound()
+        {
+            return this.View();
+        }
+
     }
 }
