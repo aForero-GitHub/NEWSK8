@@ -12,7 +12,6 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    [Authorize]
     public class PostsController : Controller
     {
         private readonly IPostRepository postRepository;
@@ -24,12 +23,14 @@
             this.userHelper = userHelper;
         }
 
+        [Authorize(Roles = "standard, Company")]
         // GET: Posts
         public IActionResult Index()
         {
             return View(this.postRepository.GetAll().OrderBy(p => p.Data));
         }
 
+        [Authorize(Roles = "standard, Company")]
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -47,6 +48,7 @@
             return View(posts);
         }
 
+        [Authorize(Roles = "standard, Company")]
         // GET: Posts/Create
         public IActionResult Create()
         {
@@ -102,6 +104,7 @@
             };
         }
 
+        [Authorize(Roles = "standard, Company")]
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -188,6 +191,7 @@
             return View(view);
         }
 
+        [Authorize (Roles = "standard, Company")]
         // GET: Posts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

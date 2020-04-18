@@ -24,6 +24,9 @@ public class SeedDb
     {
         await this.context.Database.EnsureCreatedAsync();
 
+        await this.userHelper.CheckRoleAsync("Company");
+        await this.userHelper.CheckRoleAsync("standard");
+
         var user = await this.userHelper.GetUserByEmailAsync("adavidforero@ucundinamarca.edu.co");
 
         if (user == null)
@@ -42,6 +45,14 @@ public class SeedDb
             {
                 throw new InvalidOperationException("Could not create the user in seeder");
             }
+
+            await this.userHelper.AddUserToRoleAsync(user, "standard");
+        }
+
+        var isInRole = await this.userHelper.IsUserInRoleAsync(user, "standard");
+        if(!isInRole)
+        {
+            await this.userHelper.AddUserToRoleAsync(user, "standard");
         }
 
         if (!this.context.Posts.Any())
