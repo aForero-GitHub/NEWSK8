@@ -12,7 +12,7 @@
         {
             instance = this;
 
-            this.Login = new LoginViewModel(); 
+            //this.Login = new LoginViewModel(); 
         }
 
         public static MainViewModel GetInstance()

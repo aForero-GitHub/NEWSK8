@@ -12,6 +12,7 @@
             BindingContext="{Binding Posts}"
             Padding="5">
             <ListView
+                IsRefreshing="{Binding IsRefreshing}"
                 HasUnevenRows="True"
                 ItemsSource="{Binding Posts}">
                 <ListView.ItemTemplate>
@@ -33,7 +34,7 @@
                                     <Label
                                         FontAttributes="Bold"
                                         FontSize="Medium"
-                                        Text="{Binding Name}"
+                                        Text="{Binding text}"
                                         TextColor="Black">
                                     </Label>
                                 </StackLayout>

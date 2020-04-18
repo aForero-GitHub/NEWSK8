@@ -25,5 +25,10 @@
 
         [JsonProperty("imageFullPath")]
         public Uri ImageFullPath { get; set; }
+
+        public override string ToString()
+        {
+            return $"{this.IdUser} {this.Text}";
+        }
     }
 }

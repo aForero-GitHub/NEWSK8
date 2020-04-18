@@ -10,11 +10,18 @@
     {
         private readonly ApiService apiService;
         private ObservableCollection<Posts> posts;
+        private bool isRefreshing;
 
-        public ObservableCollection<Posts> Posts 
-        { 
-            get { return this.posts; }
-            set { this.SetValue(ref this.posts, value); } 
+        public ObservableCollection<Posts> Posts
+        {
+            get => this.posts;
+            set => this.SetValue(ref this.posts, value);
+        }
+
+        public bool IsRefreshing
+        {
+            get => this.isRefreshing;
+            set => this.SetValue(ref this.isRefreshing, value);
         }
 
         public PostsViewModel()
@@ -25,10 +32,14 @@
 
         private async void LoadPosts()
         {
+            this.IsRefreshing = true;
+
             var response = await this.apiService.GetListAsync<Posts>(
                 "https:",
                 "/api",
                 "/Posts");
+
+            this.IsRefreshing = true;
 
             if (!response.IsSuccess)
             {
