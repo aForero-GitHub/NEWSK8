@@ -14,6 +14,11 @@
 		Task<SignInResult> LoginAsync(LoginViewModel model);
 
 		Task LogoutAsync();
+
+		Task<IdentityResult> UpdateUserAsync(Users user);
+
+		Task<IdentityResult> ChangePasswordAsync(Users user, string oldPassword, string newPassword);
+
 	}
 
 }

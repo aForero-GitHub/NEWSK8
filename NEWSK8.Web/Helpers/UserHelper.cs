@@ -23,6 +23,11 @@
 			return await this.userManager.CreateAsync(users, password);
 		}
 
+		public async Task<IdentityResult> ChangePasswordAsync(Users user, string oldPassword, string newPassword)
+		{
+			return await this.userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+		}
+
 		public async Task<Users> GetUserByEmailAsync(string email)
 		{
 			var users = await this.userManager.FindByEmailAsync(email);
@@ -41,7 +46,11 @@
 		public async Task LogoutAsync()
 		{
 			await this.signInManager.SignOutAsync();
+		}
 
+		public async Task<IdentityResult> UpdateUserAsync(Users user)
+		{
+			return await this.userManager.UpdateAsync(user);
 		}
 	}
 
