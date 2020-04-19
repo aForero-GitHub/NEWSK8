@@ -160,14 +160,6 @@ namespace NEWSK8.Web.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("IdPost")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IdUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("PostsId")
                         .HasColumnType("int");
 
@@ -199,18 +191,6 @@ namespace NEWSK8.Web.Migrations
 
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("IdComment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IdPost")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IdUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("NumberLikes")
                         .HasColumnType("float");
@@ -245,10 +225,6 @@ namespace NEWSK8.Web.Migrations
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("IdUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
@@ -409,7 +385,7 @@ namespace NEWSK8.Web.Migrations
             modelBuilder.Entity("NEWSK8.Web.Data.Entities.Likes", b =>
                 {
                     b.HasOne("NEWSK8.Web.Data.Entities.Comments", "Comments")
-                        .WithMany()
+                        .WithMany("Items")
                         .HasForeignKey("CommentsId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

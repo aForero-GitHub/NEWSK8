@@ -96,7 +96,6 @@
             return new Posts
             {
                 Id = view.Id,
-                IdUser = view.IdUser,
                 ImageUrl = path,
                 Text = view.Text,
                 Data = view.Data,
@@ -128,7 +127,6 @@
             return new PostViewModel
             {
                 Id = posts.Id,
-                IdUser = posts.IdUser,
                 ImageUrl = posts.ImageUrl,
                 Text = posts.Text,
                 Data = posts.Data,

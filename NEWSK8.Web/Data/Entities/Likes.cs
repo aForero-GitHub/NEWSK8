@@ -27,14 +27,6 @@ namespace NEWSK8.Web.Data.Entities
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd hh:mm tt}", ApplyFormatInEditMode = false)]
         public DateTime Fecha { get; set; }
 
-        public string IdUser { get; set; }
-
-        [Required]
-        public string IdPost { get; set; }
-
-        [Required]
-        public string IdComment { get; set; }
-
         public double NumberLikes { get; set; }
     }
 }
