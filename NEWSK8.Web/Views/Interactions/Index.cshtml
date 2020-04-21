@@ -1,0 +1,99 @@
+﻿@model IEnumerable<NEWSK8.Web.Data.Entities.Posts>
+
+@{
+    ViewData["Title"] = "To Posts";
+}
+
+<h1>My Post</h1>
+
+<p>
+    <a asp-controller="Posts" asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src="@Url.Content(item.ImageUrl)" alt="Image" style="width:100px;height:150px;max-width: 100%; height: auto;" />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data)
+                </td>
+                <td id="@item.Id">
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" id="btnDeleteItem">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="confirmDelet" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delet Post</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Do yo want to Delet the post?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" id="btnYesConfirm">  Yes  </button>
+                <button type="button" class="btn btn-outline-warning" id="btnNoConfirm">  No  </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var id = 0;
+
+            $('a[id*=btnDeleteItem]').click(function () {
+                debugger;
+                id = $(this).parent()[0].id;
+                $("#confirmDelet").modal('show');
+                return false;
+            });
+
+            $("#btnNoConfirm").click(function () {
+                $("#confirmDelet").modal('hide');
+                return false;
+            });
+
+            $("#btnYesConfirm").click(function () {
+                window.location.href = '/Posts/Delete/' + id;
+            });
+        });
+            
+    </script>
+}

@@ -22,6 +22,10 @@
         public string UserName { get; set; }
 
         [Required]
+        [Display(Name = "Phone")]
+        public string PhoneNumber { get; set; }
+
+        [Required]
         [MinLength(8)]
         public string Password { get; set; }
 

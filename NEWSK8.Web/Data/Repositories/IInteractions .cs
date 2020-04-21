@@ -4,8 +4,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public interface IInteractions : IGenericRepository<Comments>
+    public interface IInteractions : IGenericRepository<Posts>
     {
-        Task<IQueryable<Comments>> GetCommentsAsync(string UserName);
+        Task<IQueryable<Posts>> GetPostsAsync(string UserName);
     }
 }

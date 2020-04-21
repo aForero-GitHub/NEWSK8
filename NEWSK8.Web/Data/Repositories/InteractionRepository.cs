@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class InteractionRepository : GenericRepository<Comments>, IInteractions
+    public class InteractionRepository : GenericRepository<Posts>, IInteractions
     {
         private readonly DataContext context;
         private readonly IUserHelper userHelper;
@@ -16,8 +16,7 @@
             this.context = context;
             this.userHelper = userHelper;
         }
-
-        public async Task<IQueryable<Comments>> GetCommentsAsync(string UserName)
+        public async Task<IQueryable<Posts>> GetPostsAsync(string UserName)
         {
             var user = await this.userHelper.GetUserByEmailAsync(UserName);
             if (user == null)
@@ -25,19 +24,10 @@
                 return null;
             }
 
-            if (await this.userHelper.IsUserInRoleAsync(user, "standard"))
-            {
-                return this.context.Comments
-                    .Include(o => o.Items)
-                    .ThenInclude(i => i.Posts)
-                    .OrderByDescending(o => o.NumberLikes);
-            }
-
-            return this.context.Comments
-                .Include(o => o.Items)
-                .ThenInclude(i => i.Posts)
+            return this.context.Posts
+                .Include(o => o.Post)
                 .Where(o => o.Users == user)
-                .OrderByDescending(o => o.NumberLikes);
+                .OrderByDescending(o => o.Data);
         }
     }
 }

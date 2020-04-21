@@ -47,6 +47,8 @@ public class SeedDb
             }
 
             await this.userHelper.AddUserToRoleAsync(user, "standard");
+            var token = await this.userHelper.GenerateEmailConfirmationTokenAsync(user);
+            await this.userHelper.ConfirmEmailAsync(user, token);
         }
 
         var isInRole = await this.userHelper.IsUserInRoleAsync(user, "standard");

@@ -48,10 +48,25 @@
 			}
 		}
 
+		public async Task<IdentityResult> ConfirmEmailAsync(Users users, string token)
+		{
+			return await this.userManager.ConfirmEmailAsync(users, token);
+		}
+
+		public async Task<string> GenerateEmailConfirmationTokenAsync(Users users)
+		{
+			return await this.userManager.GenerateEmailConfirmationTokenAsync(users);
+		}
+
 		public async Task<Users> GetUserByEmailAsync(string email)
 		{
 			var users = await this.userManager.FindByEmailAsync(email);
 			return users;
+		}
+
+		public async Task<Users> GetUsersByIdAsync(string userId)
+		{
+			return await this.userManager.FindByIdAsync(userId);
 		}
 
 		public async Task<bool> IsUserInRoleAsync(Users user, string roleName)

@@ -1,5 +1,3 @@
-
-
 namespace NEWSK8.Web
 {
     using Data;
@@ -14,6 +12,7 @@ namespace NEWSK8.Web
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Tokens;
+    using NEWSK8.Web.Data.Repositories;
     using System.Text;
 
     public class Startup
@@ -31,6 +30,8 @@ namespace NEWSK8.Web
 
             services.AddIdentity<Users, IdentityRole>(cfg =>
             {
+                cfg.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+                cfg.SignIn.RequireConfirmedEmail = true;
                 cfg.User.RequireUniqueEmail = true;
                 cfg.Password.RequireDigit = false;
                 cfg.Password.RequiredUniqueChars = 0;
@@ -39,6 +40,7 @@ namespace NEWSK8.Web
                 cfg.Password.RequireUppercase = false;
                 cfg.Password.RequiredLength = 10;
             })
+            .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<DataContext>();
 
             services.AddAuthentication()
@@ -65,7 +67,11 @@ namespace NEWSK8.Web
 
             services.AddScoped<IUserHelper, UserHelper>();
 
+            services.AddScoped<IMailHelper, MailHelper>();
+
             services.AddControllersWithViews();
+
+            services.AddScoped<IInteractions, InteractionRepository>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {

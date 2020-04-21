@@ -23,9 +23,15 @@
 
 		Task CheckRoleAsync(string roleName);
 
-		Task AddUserToRoleAsync(Users user, string rolName);
+		Task AddUserToRoleAsync(Users users, string rolName);
 
-		Task<bool> IsUserInRoleAsync(Users user, string roleName);
+		Task<bool> IsUserInRoleAsync(Users users, string roleName);
+
+		Task<string> GenerateEmailConfirmationTokenAsync(Users users);
+
+		Task<IdentityResult> ConfirmEmailAsync(Users users, string token);
+
+		Task<Users> GetUsersByIdAsync(string userId);
 	}	
 
 }

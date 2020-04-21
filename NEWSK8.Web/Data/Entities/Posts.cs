@@ -16,7 +16,7 @@
 
         [Required]
         [Display(Name = "fecha")]
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd hh:mm tt}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime Data { get; set; }
 
         public IEnumerable<Likes> Items { get; set; }
@@ -25,6 +25,8 @@
         public double NumberLikes { get { return this.Items == null ? 0 : this.Items.Sum(i => i.NumberLikes); } }
 
         public Users Users { get; set; }
+
+        public Posts Post { get; set; }
 
         public string ImageFullPath
         {
