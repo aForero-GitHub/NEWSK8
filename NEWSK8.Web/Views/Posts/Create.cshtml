@@ -13,11 +13,6 @@
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="IdUser" class="control-label"></label>
-                <input asp-for="IdUser" class="form-control" />
-                <span asp-validation-for="IdUser" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Text" class="control-label"></label>
                 <input asp-for="Text" class="form-control" />
                 <span asp-validation-for="Text" class="text-danger"></span>
@@ -33,14 +28,11 @@
                 <span asp-validation-for="Data" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <button type="submit" class="btn btn-primary"><i class="fa fa-snowboarding"></i> Create</button>
+                <a asp-action="Index" class="btn btn-success"><i class="fa fa-chevron-left"></i> Back to List</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

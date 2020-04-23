@@ -3,6 +3,7 @@
     using Data;
     using Data.Entities;
     using Helpers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using NEWSK8.Web.Models;
@@ -11,6 +12,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+
+    [Authorize]
     public class PostsController : Controller
     {
         private readonly IPostRepository postRepository;
@@ -33,13 +36,13 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PostNotFound");
             }
 
             var posts = await this.postRepository.GetByIdAsync(id.Value);
             if (posts == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PostNotFound");
             }
 
             return View(posts);
@@ -79,8 +82,7 @@
                     path = $"~/images/Posts/{file}";
                 }
 
-                //TODO: chnge for logged user
-                view.Users = await this.userHelper.GetUserByEmailAsync("adavidforero@ucundinamarca.edu.co");
+                view.Users = await this.userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                 var posts = this.ToPost(view, path);
                 await this.postRepository.CreateAsync(posts);
                 return RedirectToAction(nameof(Index));
@@ -93,7 +95,6 @@
             return new Posts
             {
                 Id = view.Id,
-                IdUser = view.IdUser,
                 ImageUrl = path,
                 Text = view.Text,
                 Data = view.Data,
@@ -106,13 +107,13 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PostNotFound");
             }
 
             var posts = await this.postRepository.GetByIdAsync(id.Value);
             if (posts == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PostNotFound");
             }
 
             var view = this.ToPostViewModel(posts);
@@ -124,7 +125,6 @@
             return new PostViewModel
             {
                 Id = posts.Id,
-                IdUser = posts.IdUser,
                 ImageUrl = posts.ImageUrl,
                 Text = posts.Text,
                 Data = posts.Data,
@@ -139,7 +139,7 @@
         {
             if (id != view.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("PostNotFound");
             }
 
             if (ModelState.IsValid)
@@ -167,9 +167,7 @@
                         path = $"~/images/Posts/{file}";
                     }
 
-
-                    //TODO: chnge for logged user
-                    view.Users = await this.userHelper.GetUserByEmailAsync("adavidforero@ucundinamarca.edu.co");
+                    view.Users = await this.userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                     var posts = this.ToPost(view, path);
                     await this.postRepository.UpdateAsync(view);
                 }
@@ -177,7 +175,7 @@
                 {
                     if (!await this.postRepository.ExistAsync(view.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("PostNotFound");
                     }
                     else
                     {
@@ -194,13 +192,13 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PostNotFound");
             }
 
             var posts = await this.postRepository.GetByIdAsync(id.Value);
             if (posts == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PostNotFound");
             }
 
             return View(posts);
@@ -215,5 +213,11 @@
             await this.postRepository.DeleteAsync(posts);
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult PostNotFound()
+        {
+            return this.View();
+        }
+
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NEWSK8.Web.Data;
 
 namespace NEWSK8.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200419121627_Likes")]
+    partial class Likes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,9 +231,6 @@ namespace NEWSK8.Web.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PostId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
@@ -239,8 +238,6 @@ namespace NEWSK8.Web.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PostId");
 
                     b.HasIndex("UsersId");
 
@@ -410,10 +407,6 @@ namespace NEWSK8.Web.Migrations
 
             modelBuilder.Entity("NEWSK8.Web.Data.Entities.Posts", b =>
                 {
-                    b.HasOne("NEWSK8.Web.Data.Entities.Posts", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId");
-
                     b.HasOne("NEWSK8.Web.Data.Entities.Users", "Users")
                         .WithMany()
                         .HasForeignKey("UsersId");

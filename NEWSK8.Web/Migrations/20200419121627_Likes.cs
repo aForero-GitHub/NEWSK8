@@ -3,15 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NEWSK8.Web.Migrations
 {
-    public partial class Users : Migration
+    public partial class Likes : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "UsersId",
-                table: "Posts",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -160,10 +155,91 @@ namespace NEWSK8.Web.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Posts_UsersId",
-                table: "Posts",
-                column: "UsersId");
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Text = table.Column<string>(nullable: true),
+                    ImageUrl = table.Column<string>(nullable: true),
+                    Data = table.Column<DateTime>(nullable: false),
+                    UsersId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Posts_AspNetUsers_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UsersId = table.Column<string>(nullable: false),
+                    PostsId = table.Column<int>(nullable: false),
+                    Text = table.Column<string>(nullable: true),
+                    Fecha = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Posts_PostsId",
+                        column: x => x.PostsId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Comments_AspNetUsers_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Likes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UsersId = table.Column<string>(nullable: false),
+                    PostsId = table.Column<int>(nullable: false),
+                    CommentsId = table.Column<int>(nullable: false),
+                    Text = table.Column<string>(nullable: true),
+                    Fecha = table.Column<DateTime>(nullable: false),
+                    NumberLikes = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Likes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Likes_Comments_CommentsId",
+                        column: x => x.CommentsId,
+                        principalTable: "Comments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Likes_Posts_PostsId",
+                        column: x => x.PostsId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Likes_AspNetUsers_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -204,21 +280,39 @@ namespace NEWSK8.Web.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Posts_AspNetUsers_UsersId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_PostsId",
+                table: "Comments",
+                column: "PostsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_UsersId",
+                table: "Comments",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Likes_CommentsId",
+                table: "Likes",
+                column: "CommentsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Likes_PostsId",
+                table: "Likes",
+                column: "PostsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Likes_UsersId",
+                table: "Likes",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_UsersId",
                 table: "Posts",
-                column: "UsersId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                column: "UsersId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Posts_AspNetUsers_UsersId",
-                table: "Posts");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -235,18 +329,19 @@ namespace NEWSK8.Web.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Likes");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Posts");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Posts_UsersId",
-                table: "Posts");
-
-            migrationBuilder.DropColumn(
-                name: "UsersId",
-                table: "Posts");
         }
     }
 }

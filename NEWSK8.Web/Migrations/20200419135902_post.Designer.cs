@@ -10,8 +10,8 @@ using NEWSK8.Web.Data;
 namespace NEWSK8.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200416020203_Users")]
-    partial class Users
+    [Migration("20200419135902_post")]
+    partial class post
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -152,6 +152,72 @@ namespace NEWSK8.Web.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("NEWSK8.Web.Data.Entities.Comments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PostsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UsersId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostsId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("NEWSK8.Web.Data.Entities.Likes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CommentsId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("NumberLikes")
+                        .HasColumnType("float");
+
+                    b.Property<int>("PostsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UsersId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentsId");
+
+                    b.HasIndex("PostsId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("Likes");
+                });
+
             modelBuilder.Entity("NEWSK8.Web.Data.Entities.Posts", b =>
                 {
                     b.Property<int>("Id")
@@ -159,14 +225,14 @@ namespace NEWSK8.Web.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("Data")
+                    b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("IdUser")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PostId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
@@ -175,6 +241,8 @@ namespace NEWSK8.Web.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PostId");
 
                     b.HasIndex("UsersId");
 
@@ -306,8 +374,48 @@ namespace NEWSK8.Web.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("NEWSK8.Web.Data.Entities.Comments", b =>
+                {
+                    b.HasOne("NEWSK8.Web.Data.Entities.Posts", "Posts")
+                        .WithMany()
+                        .HasForeignKey("PostsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("NEWSK8.Web.Data.Entities.Users", "Users")
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("NEWSK8.Web.Data.Entities.Likes", b =>
+                {
+                    b.HasOne("NEWSK8.Web.Data.Entities.Comments", "Comments")
+                        .WithMany("Items")
+                        .HasForeignKey("CommentsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("NEWSK8.Web.Data.Entities.Posts", "Posts")
+                        .WithMany("Items")
+                        .HasForeignKey("PostsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("NEWSK8.Web.Data.Entities.Users", "Users")
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("NEWSK8.Web.Data.Entities.Posts", b =>
                 {
+                    b.HasOne("NEWSK8.Web.Data.Entities.Posts", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId");
+
                     b.HasOne("NEWSK8.Web.Data.Entities.Users", "Users")
                         .WithMany()
                         .HasForeignKey("UsersId");

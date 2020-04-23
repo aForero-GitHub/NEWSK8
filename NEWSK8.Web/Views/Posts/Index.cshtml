@@ -1,10 +1,9 @@
 ﻿@model IEnumerable<NEWSK8.Web.Data.Entities.Posts>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Publications";
 }
 
-<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,7 +12,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.IdUser)
+                @Html.DisplayNameFor(model => model.Users.FullName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Text)
@@ -31,7 +30,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.IdUser)
+                @Html.DisplayFor(modelItem => item.Users.FirstName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Text)
@@ -41,6 +40,7 @@
                 {
                     <img src="@Url.Content(item.ImageUrl)" alt="Image" style="width:100px;height:150px;max-width: 100%; height: auto;" />
                 }
+                @Html.DisplayFor(modelItem => item.Users.FirstName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Data)
